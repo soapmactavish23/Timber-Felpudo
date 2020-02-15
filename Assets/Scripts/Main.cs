@@ -14,6 +14,9 @@ public class Main : MonoBehaviour {
 	public GameObject inimigoEsq;
 	public GameObject fundo;
 	public Text txtPontos;
+	public AudioClip somBate;
+	public AudioClip somPerde;
+	public Button btnSair;
 
 	float escalaJogadorHorizontal;
 	int score = 0;
@@ -35,6 +38,9 @@ public class Main : MonoBehaviour {
 		txtPontos.transform.position = new Vector2 (Screen.width / 2, Screen.height / 2 + 100);
 		txtPontos.text = "Toque para Iniciar!";
 		txtPontos.fontSize = 25;
+
+		btnSair.onClick.AddListener (Sair);
+
 	}
 	
 	// Update is called once per frame
@@ -42,6 +48,7 @@ public class Main : MonoBehaviour {
 		//Quando tocar na tela
 		if(!acabou){
 			if(Input.GetButtonDown("Fire1")){
+				GetComponent<AudioSource> ().PlayOneShot (somBate);
 				if (Input.mousePosition.x > Screen.width / 2) {
 					bateDireita ();
 				} else {
@@ -136,7 +143,7 @@ public class Main : MonoBehaviour {
 		txtPontos.color = new Color (0.95f, 1.0f, 0.35f);
 	}
 	void GameOver(){
-
+		GetComponent<AudioSource> ().PlayOneShot (somPerde);
 		acabou = true;
 		felpudoBate.GetComponent<SpriteRenderer> ().color = new Color (1.0f, 0.35f, 0.35f);
 		felpudoIdle.GetComponent<SpriteRenderer> ().color = new Color (1.0f, 0.35f, 0.35f);
@@ -149,5 +156,9 @@ public class Main : MonoBehaviour {
 			player.GetComponent<Rigidbody2D> ().AddTorque(500.0f);
 			player.GetComponent<Rigidbody2D> ().velocity = new Vector2 (-10.0f, 5.0f);
 		}
+	}
+
+	void Sair(){
+		Application.Quit ();	
 	}
 }
