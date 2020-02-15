@@ -18,7 +18,7 @@ public class Main : MonoBehaviour {
 		escalaJogadorHorizontal = transform.localScale.x;
 		felpudoBate.SetActive (false);
 
-		CriaNovoBarril (new Vector2 (0, -3.25f));
+		CriaBarrisInicio ();
 	}
 	
 	// Update is called once per frame
@@ -71,5 +71,11 @@ public class Main : MonoBehaviour {
 		novoBarril.transform.position = posicao;
 
 		return novoBarril;
+	}
+
+	void CriaBarrisInicio(){
+		for (int i = 0; i <= 7; i++) {
+			CriaNovoBarril (new Vector2 (0, -3.25f+(i*1.7f)));
+		}
 	}
 }
