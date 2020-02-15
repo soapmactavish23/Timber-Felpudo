@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Main : MonoBehaviour {
 
@@ -11,9 +12,10 @@ public class Main : MonoBehaviour {
 	public GameObject barril;
 	public GameObject inimigoDir;
 	public GameObject inimigoEsq;
+	public Text txtPontos;
 
 	float escalaJogadorHorizontal;
-
+	int score = 0;
 	private List<GameObject> listaBlocos;
 
 	bool ladoInimigo;
@@ -25,6 +27,10 @@ public class Main : MonoBehaviour {
 
 		listaBlocos = new List<GameObject> ();
 		CriaBarrisInicio ();
+
+		txtPontos.transform.position = new Vector2 (Screen.width / 2, Screen.height / 2 + 100);
+		txtPontos.text = "Toque para Iniciar!";
+		txtPontos.fontSize = 25;
 	}
 	
 	// Update is called once per frame
@@ -104,12 +110,19 @@ public class Main : MonoBehaviour {
 	void ConfereJogada(){
 		if (listaBlocos [0].gameObject.CompareTag ("Inimigo")) {
 			if ((listaBlocos [0].name == "inimigoDir(Clone)" && !ladoInimigo) || (listaBlocos [0].name == "inimigoEsq(Clone)" && ladoInimigo)) {
-				print ("acertou!");
+				MarcarPonto ();
 			} else {
 				print ("errou!");
 			}
 		} else {
-			print ("acertou!");
+			MarcarPonto ();
 		}
+	}
+
+	void MarcarPonto(){
+		score++;
+		txtPontos.text = "Score: " + score.ToString();
+		txtPontos.fontSize = 50;
+		txtPontos.color = new Color (0.95f, 1.0f, 0.35f);
 	}
 }
