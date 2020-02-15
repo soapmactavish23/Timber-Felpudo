@@ -12,6 +12,7 @@ public class Main : MonoBehaviour {
 	public GameObject barril;
 	public GameObject inimigoDir;
 	public GameObject inimigoEsq;
+	public GameObject fundo;
 	public Text txtPontos;
 
 	float escalaJogadorHorizontal;
@@ -19,6 +20,9 @@ public class Main : MonoBehaviour {
 	private List<GameObject> listaBlocos;
 
 	bool ladoInimigo;
+
+	bool comecou;
+	bool acabou;
 
 	// Use this for initialization
 	void Start () {
@@ -36,17 +40,23 @@ public class Main : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//Quando tocar na tela
-		if(Input.GetButtonDown("Fire1")){
-			if (Input.mousePosition.x > Screen.width / 2) {
-				bateDireita ();
-			} else {
-				bateEsquerda ();
+		if(!acabou){
+			if(Input.GetButtonDown("Fire1")){
+				if (Input.mousePosition.x > Screen.width / 2) {
+					bateDireita ();
+				} else {
+					bateEsquerda ();
+				}
+				listaBlocos.RemoveAt (0);
+				ReposicionaBlocos ();
+				ConfereJogada ();
 			}
-			listaBlocos.RemoveAt (0);
-			ReposicionaBlocos ();
-			ConfereJogada ();
+		}
+		if(player.transform.position.y < -5){
+			Application.LoadLevel (0);
 		}
 	}
+
 	//Codigos para o Player
 	void bateDireita(){
 		ladoInimigo = true;
@@ -112,7 +122,7 @@ public class Main : MonoBehaviour {
 			if ((listaBlocos [0].name == "inimigoDir(Clone)" && !ladoInimigo) || (listaBlocos [0].name == "inimigoEsq(Clone)" && ladoInimigo)) {
 				MarcarPonto ();
 			} else {
-				print ("errou!");
+				GameOver ();
 			}
 		} else {
 			MarcarPonto ();
@@ -124,5 +134,20 @@ public class Main : MonoBehaviour {
 		txtPontos.text = "Score: " + score.ToString();
 		txtPontos.fontSize = 50;
 		txtPontos.color = new Color (0.95f, 1.0f, 0.35f);
+	}
+	void GameOver(){
+
+		acabou = true;
+		felpudoBate.GetComponent<SpriteRenderer> ().color = new Color (1.0f, 0.35f, 0.35f);
+		felpudoIdle.GetComponent<SpriteRenderer> ().color = new Color (1.0f, 0.35f, 0.35f);
+		player.GetComponent<Rigidbody2D> ().isKinematic = false;
+
+		if (ladoInimigo) {
+			player.GetComponent<Rigidbody2D> ().AddTorque(-500.0f);
+			player.GetComponent<Rigidbody2D> ().velocity = new Vector2 (10.0f, 5.0f);
+		} else {
+			player.GetComponent<Rigidbody2D> ().AddTorque(500.0f);
+			player.GetComponent<Rigidbody2D> ().velocity = new Vector2 (-10.0f, 5.0f);
+		}
 	}
 }
