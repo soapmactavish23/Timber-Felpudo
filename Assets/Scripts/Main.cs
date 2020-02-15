@@ -16,6 +16,8 @@ public class Main : MonoBehaviour {
 
 	private List<GameObject> listaBlocos;
 
+	bool ladoInimigo;
+
 	// Use this for initialization
 	void Start () {
 		escalaJogadorHorizontal = transform.localScale.x;
@@ -36,10 +38,12 @@ public class Main : MonoBehaviour {
 			}
 			listaBlocos.RemoveAt (0);
 			ReposicionaBlocos ();
+			ConfereJogada ();
 		}
 	}
 	//Codigos para o Player
 	void bateDireita(){
+		ladoInimigo = true;
 		felpudoBate.SetActive (true);
 		felpudoIdle.SetActive (false);
 		player.transform.position = new Vector2 (2f, player.transform.position.y);
@@ -49,6 +53,7 @@ public class Main : MonoBehaviour {
 	}
 
 	void bateEsquerda(){
+		ladoInimigo = false;
 		felpudoBate.SetActive (true);
 		felpudoIdle.SetActive (false);
 		player.transform.position = new Vector2 (-2f, player.transform.position.y);
@@ -89,10 +94,22 @@ public class Main : MonoBehaviour {
 	}
 
 	void ReposicionaBlocos(){
-		GameObject objetoBarril = CriaNovoBarril (new Vector2 (0, -3.25f+(7*1.7f)));
+		GameObject objetoBarril = CriaNovoBarril (new Vector2 (0, -3.25f+(8*1.7f)));
 		listaBlocos.Add(objetoBarril);
 		for (int i = 0; i <= 7; i++) {
 			listaBlocos [i].transform.position = new Vector2 (listaBlocos [i].transform.position.x, listaBlocos [i].transform.position.y-1.7f);
+		}
+	}
+
+	void ConfereJogada(){
+		if (listaBlocos [0].gameObject.CompareTag ("Inimigo")) {
+			if ((listaBlocos [0].name == "inimigoDir(Clone)" && !ladoInimigo) || (listaBlocos [0].name == "inimigoEsq(Clone)" && ladoInimigo)) {
+				print ("acertou!");
+			} else {
+				print ("errou!");
+			}
+		} else {
+			print ("acertou!");
 		}
 	}
 }
