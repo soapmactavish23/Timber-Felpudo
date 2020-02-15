@@ -89,6 +89,10 @@ public class Main : MonoBehaviour {
 	}
 
 	void ReposicionaBlocos(){
-		
+		GameObject objetoBarril = CriaNovoBarril (new Vector2 (0, -3.25f+(7*1.7f)));
+		listaBlocos.Add(objetoBarril);
+		for (int i = 0; i <= 7; i++) {
+			listaBlocos [i].transform.position = new Vector2 (listaBlocos [i].transform.position.x, listaBlocos [i].transform.position.y-1.7f);
+		}
 	}
 }
